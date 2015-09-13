@@ -48,7 +48,7 @@ class MeetingParserTest extends FlatSpec with Matchers {
   private val givenDate: String = "2014-12-01"
   s"meet Jane Kennedy on $givenDate at 18" should s"mean a Meeting on $givenDate with Jane Kennedy at 18" in {
 
-    val input = "meet Jane Kennedy on " + givenDate + " at 18"
+    val input = s"meet Jane Kennedy on $givenDate at 18"
     val result = parser.parse(input)
     result should be(Meeting("Jane Kennedy", DateTime.parse(givenDate), Some(18)))
   }
