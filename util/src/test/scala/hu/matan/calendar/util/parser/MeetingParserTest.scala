@@ -85,6 +85,6 @@ class MeetingParserTest extends FlatSpec with Matchers {
 
     result should be(Meeting("Joel Spolsky", longEnglishDateFormat.parseDateTime(longEnglishDate), Some(LocalTime.parse(givenTime))))
   }
-  
-  //  2nd  TODO produce combinations of input values using property_based_testing. See http://www.scalatest.org/user_guide/property_based_testing
+
+  //  TODO produce combinations of input values using property_based_testing. See http://www.scalatest.org/user_guide/property_based_testing
 }
