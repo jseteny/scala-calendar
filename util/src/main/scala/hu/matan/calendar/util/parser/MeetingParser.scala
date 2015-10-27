@@ -6,6 +6,7 @@ import hu.matan.calendar.Meeting
 import org.joda.time.format.DateTimeFormat
 import org.joda.time.{DateTime, LocalTime}
 
+import scala.util.Try
 import scala.util.parsing.combinator.RegexParsers
 
 
@@ -21,17 +22,17 @@ class MeetingParser(implicit val givenDate: DateTime) extends RegexParsers {
     case nameList ~ Some(d) ~ Some(t) => Meeting(nameList.mkString(" "), parseDate(d), Some(LocalTime.parse(t)))
   }
 
-  def parseDate(d: String): DateTime = {
-    try {
-      DateTime.parse(d)
-    } catch {
-      case _: IllegalArgumentException => DateTimeFormat.shortDate().withLocale(Locale.ENGLISH).parseDateTime(d)
-    }
-  }
+  def parseDate(d: String): DateTime = Try(DateTime.parse(d)).
+    orElse(Try(DateTimeFormat.shortDate().withLocale(Locale.ENGLISH).parseDateTime(d))).
+    orElse(Try(DateTimeFormat.longDate().withLocale(Locale.ENGLISH).parseDateTime(d))).get
 
   def namePart: Parser[String] = """\w+""".r
 
-  def date: Parser[String] = """[\w\.\-/]+""".r
+  def somethingElse: Parser[String] = """\S+""".r
+
+  def date: Parser[String] = rep(not("at") ~> somethingElse) ^^ {
+    case list => list.mkString(" ")
+  }
 
   def time: Parser[String] = """\d+:\d+""".r | """\d+""".r
 

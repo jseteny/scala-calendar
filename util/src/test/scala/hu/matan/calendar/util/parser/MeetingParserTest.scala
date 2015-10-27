@@ -84,7 +84,5 @@ class MeetingParserTest extends FlatSpec with Matchers {
     val result = parser.parse(input)
 
     result should be(Meeting("Joel Spolsky", longEnglishDateFormat.parseDateTime(longEnglishDate), Some(LocalTime.parse(givenTime))))
-
-    //    TODO modify MeetingParser.parseDate using scala.util.Try. See http://www.scala-lang.org/api/2.10.3/index.html#scala.util.Try
   }
 }
